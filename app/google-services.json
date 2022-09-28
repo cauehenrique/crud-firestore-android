@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "84890124072",
+    "project_id": "firestore-maneiro",
+    "storage_bucket": "firestore-maneiro.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:84890124072:android:993ab50ec4b79f5b4bda1d",
+        "android_client_info": {
+          "package_name": "com.example.crud"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "84890124072-qol6drd1rppdeue55f0rckphp5m48lsk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAVlHbcecXTstHvnu0UhuVQkI8umHjBn6k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "84890124072-qol6drd1rppdeue55f0rckphp5m48lsk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
