@@ -40,6 +40,9 @@ class MainActivity : AppCompatActivity() {
 		}
 
 		deleteButton.setOnClickListener {
+			val intent = Intent(this, DeleteActivity::class.java)
+			startActivity(intent)
+			finish()
 		}
 
 		firestore.collection("product").get()
