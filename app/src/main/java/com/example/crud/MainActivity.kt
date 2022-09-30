@@ -1,55 +1,66 @@
 package com.example.crud
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.crud.adapters.ProductAdapter
-import com.example.crud.model.Product
+import androidx.appcompat.app.AppCompatDelegate
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import java.text.NumberFormat
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 	private val firestore = Firebase.firestore
 
 	override fun onCreate(savedInstanceState: Bundle?) {
+		AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.activity_main)
-
 		supportActionBar!!.hide()
 
-		val productsView = findViewById<RecyclerView>(R.id.productsRecyclerView)
-		productsView.layoutManager = LinearLayoutManager(this)
-		productsView.setHasFixedSize(true)
+		val itemsTextView = findViewById<TextView>(R.id.itemsTextView)
+		val createButton = findViewById<Button>(R.id.createButton)
+		val updateButton = findViewById<Button>(R.id.updateButton)
+		val deleteButton = findViewById<Button>(R.id.deleteButton)
 
-		val products: MutableList<Product> = mutableListOf()
-		productsView.adapter = ProductAdapter(this, products, firestore)
+		createButton.setOnClickListener {
+			val intent = Intent(this, CreateActivity::class.java)
+			startActivity(intent)
+			finish()
+		}
+
+		updateButton.setOnClickListener {
+			val intent = Intent(this, UpdateActivity::class.java)
+			startActivity(intent)
+			finish()
+		}
+
+		deleteButton.setOnClickListener {
+		}
 
 		firestore.collection("product").get()
 			.addOnSuccessListener { result ->
-				for (product in result) {
-					findViewById<TextView>(R.id.errorText).text = product.data["name"].toString()
+				val numberFormat = NumberFormat.getCurrencyInstance()
+				numberFormat.maximumFractionDigits = 2
+				numberFormat.currency = Currency.getInstance("BRL")
 
+				itemsTextView.text = ""
+
+				for (product in result) {
 					val id = product.id
 					val name = product.data["name"].toString()
 					val price = product.data["price"].toString().toFloat()
+					val priceToBrl = numberFormat.format(price)
 
-					val productInstance = Product(id, name, price)
-					products.add(productInstance)
+					itemsTextView.text = itemsTextView.text.toString() + "$name - $priceToBrl\n"
 				}
 			}
 			.addOnFailureListener { exception ->
-				findViewById<TextView>(R.id.errorText).text = exception.toString()
+				Toast.makeText(this, exception.toString(), Toast.LENGTH_SHORT)
 			}
-
-//		val helloWorldTextView = findViewById<TextView>(R.id.helloWorld)
-//		db.collection("product").get()
-//			.addOnSuccessListener { result ->
-//				for (product in result) {
-//					helloWorldTextView.text = "${product.id}"
-//				}
-//			}
-//
 	}
 }
